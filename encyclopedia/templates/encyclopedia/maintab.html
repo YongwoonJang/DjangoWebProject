@@ -1,0 +1,134 @@
+{% extends "encyclopedia/index.html" %}
+{% load static %}
+
+{% block tabindicator %}
+    {% if menu_list %}
+    <nav class="nav nav-tabs nav-fill justify-content-center mb-4" role="tablist">
+    <!-- <nav class="row align-items-center justify-content-center my-2 mx-4" id="v-pills-tab" role="tablist"> -->
+            {% for service in menu_list %}
+              <!-- data toggle은 tab의 종류를 나타내고, aria-control과 aria-label은 key에 대한 반응을 나타낸다. -->
+                {% if service.menu == "list" %}
+                  {% if index == 0 %}
+                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link active" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                  목록 보기
+                  </a>
+                  {% elif index == 1 %}
+                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                  목록 보기
+                  </a>
+                  {% endif %}
+                {% elif service.menu == "insert" %}
+                  {% if index == 0 %}
+                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                  목록 보기
+                  </a>
+                  {% elif index == 1 %}
+                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link active" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                  목록 보기
+                  </a>
+                  {% endif %}
+                {% elif service.menu == "search" %}
+                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                  코드 찾기
+                  </a>
+                {% endif %}
+            {% endfor %}
+    </nav>
+    {% endif %}
+{% endblock %}
+
+{% block tabcontent %}
+  {% if menu_list %}
+      <div class="tab-content">
+        {% for service in menu_list %}
+            {% if service.menu == "list"%}
+
+              {% if index == 0 %}
+              <div  id="{{service.menu}}-tab" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
+              {% elif index == 1 %}
+              <div  id="{{service.menu}}-tab" class="tab-pane fade show" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
+              {% endif %}
+
+                  <div class="row">
+                    {%if source_list %}
+                      <input id="iframecount" style="display:none;" value="{{source_list|length}}"/>
+                      {% for source in source_list %}
+                        <div class="col-sm-4">
+                          <div>
+                            <iframe id="listNum{{forloop.counter0}}" class="col-sm-11" style="display:block; margin:auto; height:177.273px;"  sandbox="allow-same-origin allow-scripts">
+                            </iframe>
+                            <div style="padding-left:10px;">{{source.title}}</div>
+                          </div>
+
+                          <div style="display:none;">
+                            <input id="iframehtml{{forloop.counter0}}" value="{{source.htmlcontents}}"/>
+                            <input id="iframetitle{{forloop.counter0}}" value="{{source.title}}"/>
+                            <input id="iframejs{{forloop.counter0}}" value="{{source.javascriptcontents}}"/>
+                            <input id="iframecss{{forloop.counter0}}" value="{{source.csscontents}}"/>
+                          </div>
+                        </div>
+                      {% endfor %}
+                      <div>
+                        Hello {{index}}
+                      </div>
+                    {% endif %}
+                  </div>
+
+              </div>
+
+            {% elif service.menu == "insert" %}
+              {% if index == 0 %}
+              <div  id="{{service.menu}}-tab" class="tab-pane fade show" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
+              {% elif index == 1 %}
+              <div  id="{{service.menu}}-tab" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
+              {% endif %}
+                <form class="form-horizontal" method ="POST" action="./upload" >
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{request.path}}"/>
+                    <!-- customizing form style !-->
+                        {{form.non_field_errors}}
+                        <div class="form-group row">
+                            {{ form.subject.errors }}
+                            <label class="col-sm-12 control-label" for="{{ form.title.id_for_label }}"><h7>제목</h7></label>
+                            <div class="col-sm-12">
+                              {{ form.title }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label class="control-label" for="{{ form.csscontents.id_for_label }}"><h7>CSS 코드</h7></label>
+                                <div>
+                                  {{ form.csscontents }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="control-label" for="{{ form.htmlcontents.id_for_label }}"><h7>HTML 코드</h7></label>
+                                <div>
+                                  {{ form.htmlcontents }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="control-label" for="{{ form.javascriptcontents.id_for_label }}"><h7>JAVASCRIPT 코드</h7></label>
+                                <div>
+                                  {{ form.javascriptcontents }}
+                                </div>
+                            </div>
+                          </div>
+
+                          <input type="submit" id="transferbutton" value="vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"/>
+                          <iframe src= "{% static 'encyclopedia/sourcestorage/hello.html' %}" id="tmpresult" class="form-horizontal" width="100%"   sandbox="allow-same-origin allow-scripts allow-top-navigation">이 사이트는 iFrame을 제공하지 않습니다.</iframe>
+                          <!--<input type="submit" value="저장"/>!-->
+                </form>
+
+              </div>
+
+            {% elif service.menu == "search" %}
+            <div  id="{{service.menu}}-tab" class="tab-pane fade" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
+            공사중.
+            </div>
+            {% endif %}
+        {% endfor %}
+      </div>
+  {% endif %}
+{% endblock %}
