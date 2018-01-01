@@ -10,9 +10,11 @@
 
 <body>
   <div class="container">
-  	<div class="row algin-items-center justify-content-center my-5" id="layoutTitle">
-  		    <h1><a href="{% url 'index' %}" style="color:limegreen; text-decoration:none;">스타벅스<span style="color:green">프로젝트</span></a></h1>
-  	</div>
+		{% if index == 0 %}
+			<div class="row algin-items-center justify-content-center my-5" id="layoutTitle">
+	  		    <h1><a href="{% url 'index' %}" style="color:limegreen; text-decoration:none;">스타벅스<span style="color:green">프로젝트</span></a></h1>
+	  	</div>
+		{% endif %}
 		<br/>
 		<!-- Selector !-->
 		{% block tabindicator %}

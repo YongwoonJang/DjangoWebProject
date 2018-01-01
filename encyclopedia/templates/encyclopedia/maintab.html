@@ -20,11 +20,11 @@
                 {% elif service.menu == "insert" %}
                   {% if index == 0 %}
                   <a id="nav-{{service.menu}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
-                  목록 보기
+                  코드 만들기
                   </a>
                   {% elif index == 1 %}
                   <a id="nav-{{service.menu}}-tab" class="nav-item nav-link active" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
-                  목록 보기
+                  코드 만들기
                   </a>
                   {% endif %}
                 {% elif service.menu == "search" %}
@@ -53,24 +53,14 @@
                     {%if source_list %}
                       <input id="iframecount" style="display:none;" value="{{source_list|length}}"/>
                       {% for source in source_list %}
-                        <div class="col-sm-4">
-                          <div>
-                            <iframe id="listNum{{forloop.counter0}}" class="col-sm-11" style="display:block; margin:auto; height:177.273px;"  sandbox="allow-same-origin allow-scripts">
-                            </iframe>
-                            <div style="padding-left:10px;">{{source.title}}</div>
-                          </div>
 
-                          <div style="display:none;">
-                            <input id="iframehtml{{forloop.counter0}}" value="{{source.htmlcontents}}"/>
-                            <input id="iframetitle{{forloop.counter0}}" value="{{source.title}}"/>
-                            <input id="iframejs{{forloop.counter0}}" value="{{source.javascriptcontents}}"/>
-                            <input id="iframecss{{forloop.counter0}}" value="{{source.csscontents}}"/>
-                          </div>
+                        <div class="col-sm-4">
+                          <iframe id="listNum{{forloop.counter0}}" class="col-sm-11" style="display:block; margin:auto; height:177.273px;"  sandbox="allow-same-origin allow-scripts">
+                          </iframe>
+                          <div style="background-color:yellow; text-align:center;">{{source.title}}</div>
                         </div>
+
                       {% endfor %}
-                      <div>
-                        Hello {{index}}
-                      </div>
                     {% endif %}
                   </div>
 
@@ -82,7 +72,7 @@
               {% elif index == 1 %}
               <div  id="{{service.menu}}-tab" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
               {% endif %}
-                <form class="form-horizontal" method ="POST" action="./upload" >
+                <form id="codeform" class="form-horizontal" method ="POST" action="./upload" >
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{request.path}}"/>
                     <!-- customizing form style !-->
@@ -116,9 +106,22 @@
                             </div>
                           </div>
 
-                          <input type="submit" id="transferbutton" value="vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"/>
-                          <iframe src= "{% static 'encyclopedia/sourcestorage/hello.html' %}" id="tmpresult" class="form-horizontal" width="100%"   sandbox="allow-same-origin allow-scripts allow-top-navigation">이 사이트는 iFrame을 제공하지 않습니다.</iframe>
-                          <!--<input type="submit" value="저장"/>!-->
+                      <div class="form-group row">
+                          <div class="col-sm-12">
+                            <input style="width:100%;" type="submit" id="transferbutton" value="코드 만들기"/>
+                          </div>
+                      </div>
+
+                      <iframe src= "{% static 'encyclopedia/sourcestorage/hello.html' %}" id="tmpresult" class="form-horizontal" width="100%"   sandbox="allow-same-origin allow-scripts allow-top-navigation">이 사이트는 iFrame을 제공하지 않습니다.</iframe>
+
+                      <!-- Save code !-->
+                      <div class="form-group row">
+                          <div class="col-sm-12">
+                            <input style="width:100%;" type="submit" id="savebutton" value="코드 저장하기"  action="changeselector()"/>
+                          </div>
+                      </div>
+                      <input name="selector" type="hidden" id="selectorID" value="makeDEMO"></input>
+
                 </form>
 
               </div>
