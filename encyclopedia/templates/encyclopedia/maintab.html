@@ -7,28 +7,28 @@
     <!-- <nav class="row align-items-center justify-content-center my-2 mx-4" id="v-pills-tab" role="tablist"> -->
             {% for service in menu_list %}
               <!-- data toggle은 tab의 종류를 나타내고, aria-control과 aria-label은 key에 대한 반응을 나타낸다. -->
-                {% if service.menu == "list" %}
+                {% if service == "list" %}
                   {% if index == 0 %}
-                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link active" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                  <a id="nav-{{service}}-tab" class="nav-item nav-link active" role="tab" data-toggle="tab" aria-controls="{{service}}-tab" href="#{{service}}-tab">
                   목록 보기
                   </a>
                   {% elif index == 1 %}
-                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                  <a id="nav-{{service}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service}}-tab" href="#{{service}}-tab">
                   목록 보기
                   </a>
                   {% endif %}
-                {% elif service.menu == "insert" %}
+                {% elif service == "insert" %}
                   {% if index == 0 %}
-                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                  <a id="nav-{{service}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service}}-tab" href="#{{service}}-tab">
                   코드 만들기
                   </a>
                   {% elif index == 1 %}
-                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link active" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                  <a id="nav-{{service}}-tab" class="nav-item nav-link active" role="tab" data-toggle="tab" aria-controls="{{service}}-tab" href="#{{service}}-tab">
                   코드 만들기
                   </a>
                   {% endif %}
-                {% elif service.menu == "search" %}
-                  <a id="nav-{{service.menu}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service.menu}}-tab" href="#{{service.menu}}-tab">
+                {% elif service == "search" %}
+                  <a id="nav-{{service}}-tab" class="nav-item nav-link" role="tab" data-toggle="tab" aria-controls="{{service}}-tab" href="#{{service}}-tab">
                   코드 찾기
                   </a>
                 {% endif %}
@@ -41,12 +41,12 @@
   {% if menu_list %}
       <div class="tab-content">
         {% for service in menu_list %}
-            {% if service.menu == "list"%}
+            {% if service == "list"%}
 
               {% if index == 0 %}
-              <div  id="{{service.menu}}-tab" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
+              <div  id="{{service}}-tab" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-{{service}}-tab">
               {% elif index == 1 %}
-              <div  id="{{service.menu}}-tab" class="tab-pane fade show" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
+              <div  id="{{service}}-tab" class="tab-pane fade show" role="tabpanel" aria-labelledby="nav-{{service}}-tab">
               {% endif %}
 
                   <div class="row">
@@ -55,7 +55,7 @@
                       {% for source in source_list %}
 
                         <div class="col-sm-4">
-                          <iframe id="listNum{{forloop.counter0}}" class="col-sm-11" style="display:block; margin:auto; height:177.273px;"  sandbox="allow-same-origin allow-scripts">
+                          <iframe id="listNum{{forloop.counter0}}" class="col-sm-11" style="display:block; margin:auto; height:177.273px;">
                           </iframe>
                           <div style="background-color:yellow; text-align:center;">{{source.title}}</div>
                         </div>
@@ -66,11 +66,11 @@
 
               </div>
 
-            {% elif service.menu == "insert" %}
+            {% elif service == "insert" %}
               {% if index == 0 %}
-              <div  id="{{service.menu}}-tab" class="tab-pane fade show" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
+              <div  id="{{service}}-tab" class="tab-pane fade show" role="tabpanel" aria-labelledby="nav-{{service}}-tab">
               {% elif index == 1 %}
-              <div  id="{{service.menu}}-tab" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
+              <div  id="{{service}}-tab" class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-{{service}}-tab">
               {% endif %}
                 <form id="codeform" class="form-horizontal" method ="POST" action="./upload" >
                     {% csrf_token %}
@@ -108,7 +108,7 @@
 
                       <div class="form-group row">
                           <div class="col-sm-12">
-                            <input style="width:100%;" type="submit" id="transferbutton" value="코드 만들기"/>
+                            <input style="width:100%;" type="button" id="transferbutton" value="코드 만들기"/>
                           </div>
                       </div>
 
@@ -117,7 +117,7 @@
                       <!-- Save code !-->
                       <div class="form-group row">
                           <div class="col-sm-12">
-                            <input style="width:100%;" type="submit" id="savebutton" value="코드 저장하기"  action="changeselector()"/>
+                            <input style="width:100%;" type="submit" id="savebutton" value="코드 저장하기"/>
                           </div>
                       </div>
                       <input name="selector" type="hidden" id="selectorID" value="makeDEMO"></input>
@@ -126,9 +126,14 @@
 
               </div>
 
-            {% elif service.menu == "search" %}
-            <div  id="{{service.menu}}-tab" class="tab-pane fade" role="tabpanel" aria-labelledby="nav-{{service.menu}}-tab">
-            공사중.
+            {% elif service == "search" %}
+            <div  id="{{service}}-tab" class="tab-pane fade" role="tabpanel" aria-labelledby="nav-{{service}}-tab">
+              <form id="searchform" class="form-horizontal" method ="POST" action="./search" >
+                    <div class="col-sm-12">
+                      <label><h7>찾기</h7></label>
+                      <input name="serachtext"></input>
+                    </div>
+              </form>
             </div>
             {% endif %}
         {% endfor %}
