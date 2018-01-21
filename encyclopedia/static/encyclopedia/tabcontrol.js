@@ -47,6 +47,9 @@ $(document).ready(function(){
    });
 
    $("#searchtext").on('keypress', function(e){
+     if(keyCode === 13){
+       return false;
+     }
    });
 
    $("#searchtext").on('keyup keypress', function(e){
