@@ -4,6 +4,9 @@ from .forms import SourceForm
 import logging
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.http import JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
+from django.core.serializers import serialize
 from django.core.files import File
 
 # Create your views here.
@@ -15,7 +18,7 @@ def index(request):
 
     #file writing.
     for i in range(0, source_list.count()):
-        with open('C:/Users/USER/Documents/DjangoWebProject/encyclopedia/static/encyclopedia/sourcestorage/codeinventory/'+str(i)+".html", 'w+') as f:
+        with open('C:/Users/USER/Documents/DjangoWebProject/encyclopedia/static/encyclopedia/sourcestorage/codeinventory/'+str(source_list[i].id)+".html", 'w+') as f:
             myfile = File(f)
             myfile.write('<!DOCTYPE html><html>'+'<head>'+'<style>'+source_list[i].csscontents+'</style>'+'</head>'+'<body>'+source_list[i].htmlcontents+'</body>'+'<script>'+source_list[i].javascriptcontents+'</script></html>')
             myfile.closed
@@ -65,6 +68,16 @@ def upload_file(request):
 
     context = {'source_list':source_list,'menu_list':["list","insert","search"], 'form':fileform, 'index':1}
     return render(request, 'encyclopedia/maintab.html', context) # to do configure to current tab.
+
+# 시작은 미약하나 끝은 창대하리라.
+# Your beginnings will seem humble, so prosperous will your future be.... (JOB 8:7)
+def search_data(request):
+    logger = logging.getLogger(__name__)
+    source_list = Content.objects.filter(htmlcontents__contains=request.POST.get('searchtext', ''))
+    logger.error(source_list)
+    context = serialize('json',source_list)
+    logger.error(type(context))#safe=false is acceptable.
+    return JsonResponse(context, safe=False)
 
 # define code page
 def page(request):

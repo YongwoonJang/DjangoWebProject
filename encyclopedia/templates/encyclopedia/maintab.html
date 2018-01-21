@@ -128,12 +128,14 @@
 
             {% elif service == "search" %}
             <div  id="{{service}}-tab" class="tab-pane fade" role="tabpanel" aria-labelledby="nav-{{service}}-tab">
-              <form id="searchform" class="form-horizontal" method ="POST" action="./search" >
+              <form id="searchform" class="form-horizontal" method ="POST" action="" >
+                    {% csrf_token %}
                     <div class="col-sm-12">
                       <label><h7>찾기</h7></label>
-                      <input name="serachtext"></input>
+                      <input name="searchtext" id="searchtext"></input>
                     </div>
               </form>
+              <div id = "resultofsearch" class="row"></div>
             </div>
             {% endif %}
         {% endfor %}

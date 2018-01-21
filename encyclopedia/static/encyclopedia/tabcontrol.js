@@ -32,8 +32,8 @@ $(document).ready(function(){
    });
 
    $("#transferbutton").click(function(){
-     var formData = $("#codeform").serialize();
      console.log("this section is executed.");
+     var formData = $("#codeform").serialize();
      $('#selectorID').val('makeDEMO');
 
      $.ajax({
@@ -45,4 +45,59 @@ $(document).ready(function(){
          }
      });
    });
+
+   $("#searchtext").on('keypress', function(e){
+   });
+
+   $("#searchtext").on('keyup keypress', function(e){
+     var keyCode = e.KeyCode || e.which;
+     if(keyCode === 13){
+       e.preventDefault();
+       console.log("enter up function is executed");
+       var formData = $("#searchform").serialize();
+
+       //replace submit
+       $.ajax({
+         type : "POST",
+         url : "http://localhost:8000/encyclopedia/search",
+         data : formData,
+         dataType : 'json',
+         success:function(data){
+           result = jQuery.parseJSON(data);
+           var index;
+           $.each(result, function(key, value){
+             $.each(value, function(k, v){
+               console.log("start");
+               if(k == "pk"){
+                 index = v;
+                 console.log("type of index is "+typeof(index));
+               }else if(k == "fields"){
+                 console.log("fields");
+                 $.each(v, function(i, title){
+                   if(i == "title"){
+
+                       $('#resultofsearch').append(
+                         '<div class="col-sm-4">'
+                          +'<iframe class="col-sm-11" style="display:block; margin:auto; height:177.273px;" src="/static/encyclopedia/sourcestorage/codeinventory/'
+                          + index
+                          +'.html"></iframe><div style="background-color:yellow; text-align:center;">'
+                          + title
+                          + '</div></div>'
+                       );
+                   }
+
+                 });
+               }
+
+             });
+           });
+         },
+
+         error:function(xhr, status,error){
+           $('#resultofsearch').text('internal server is error');
+         }
+       });
+     }
+   });
+
 });
