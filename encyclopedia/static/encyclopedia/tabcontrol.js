@@ -32,13 +32,13 @@ $(document).ready(function(){
    });
 
    $("#transferbutton").click(function(){
-     console.log("this section is executed.");
      var formData = $("#codeform").serialize();
+     console.log("this section is executed.");
      $('#selectorID').val('makeDEMO');
 
      $.ajax({
          type : "POST",
-         url : "http://localhost:8000/encyclopedia/upload",
+         url : "http://14.63.172.86:8001/encyclopedia/upload",
          data : formData,
          success:function(data){
            $('#tmpresult').attr('src','/static/encyclopedia/sourcestorage/hello.html');
@@ -47,60 +47,41 @@ $(document).ready(function(){
    });
 
    $("#searchtext").on('keypress', function(e){
-     if(keyCode === 13){
-       return false;
-     }
+   	var keyCode = e.KeyCode || e.which;
+	if(keyCode === 13){
+	       var formData = $("#searchform").serialize();
+
+	       //replace submit
+	       $.ajax({
+	         cache : false,
+		 type : "POST",
+	         url : "http://14.63.172.86:8001/encyclopedia/search",
+	         data : formData,
+	         dataType : 'json',
+	         success:function(data){
+	           console.log("this part is success")
+	           result = jQuery.parseJSON(data);
+	           $('#resultofsearch').append(
+	             '<div class="col-sm-4">'
+			+ result
+			+ '</div>'
+		   );  
+		 },
+	
+	         error:function(xhr, status, error){
+	           $('#resultofsearch').text('internal server is error');
+	         }
+	       });
+	
+		return false;
+	 }
+	
+	//prevent submit. 
+	//if submit is executed.. then key up is happened. 
+
    });
 
-   $("#searchtext").on('keyup keypress', function(e){
-     var keyCode = e.KeyCode || e.which;
-     if(keyCode === 13){
-       e.preventDefault();
-       console.log("enter up function is executed");
-       var formData = $("#searchform").serialize();
-
-       //replace submit
-       $.ajax({
-         type : "POST",
-         url : "http://localhost:8000/encyclopedia/search",
-         data : formData,
-         dataType : 'json',
-         success:function(data){
-           result = jQuery.parseJSON(data);
-           var index;
-           $.each(result, function(key, value){
-             $.each(value, function(k, v){
-               console.log("start");
-               if(k == "pk"){
-                 index = v;
-                 console.log("type of index is "+typeof(index));
-               }else if(k == "fields"){
-                 console.log("fields");
-                 $.each(v, function(i, title){
-                   if(i == "title"){
-
-                       $('#resultofsearch').append(
-                         '<div class="col-sm-4">'
-                          +'<iframe class="col-sm-11" style="display:block; margin:auto; height:177.273px;" src="/static/encyclopedia/sourcestorage/codeinventory/'
-                          + index
-                          +'.html"></iframe><div style="background-color:yellow; text-align:center;">'
-                          + title
-                          + '</div></div>'
-                       );
-                   }
-
-                 });
-               }
-
-             });
-           });
-         },
-
-         error:function(xhr, status,error){
-           $('#resultofsearch').text('internal server is error');
-         }
-       });
-     }
-   });
+//   $("#searchtext").keyup(function(e){
+//  });
 
 });

@@ -1,1 +1,15 @@
-<!DOCTYPE html><html><head><style>23</style></head><body>34</body><script>5</script></html>
+<!DOCTYPE html><html><head><style>body {
+        margin: 0px;
+        padding: 0px;
+      }</style></head><body><canvas id="myCanvas" width="1980" height="1080"></canvas></body><script>var canvas = document.getElementById('myCanvas');
+		var ctx = canvas.getContext('2d');
+
+		ctx.beginPath();
+
+		ctx.moveTo(170, 10);
+		ctx.lineTo(170, 20);
+
+		//context.moveTo(228, 300);
+		// context.lineTo(228, 228); 
+
+		ctx.stroke();</script></html>

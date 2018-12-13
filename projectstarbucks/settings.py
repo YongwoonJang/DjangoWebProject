@@ -25,7 +25,7 @@ SECRET_KEY = 'w%&piy4hxv^agu9%&ie&mop6x-^_8zy&f5b%y6-7fv5+-mzq*2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['172.27.0.106']
 
 
 # Application definition
@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'projectstarbucks.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'projectstarbucks',
-        'USER': 'root',
-        'PASSWORD': '*******',
-        'HOST': '127.0.0.1',
-        'PORT': '3307'
+        'NAME': 'INFODB',
+        'USER': 'jyy2k',
+        'PASSWORD': 'Fjtldktlqpfldk',
+        'HOST': '172.27.0.104',
+        'PORT': '3306'
     }
 }
 
@@ -129,7 +129,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': "debug.log",
         },
@@ -137,10 +137,10 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'propagate': True,
         },
     },
 }
 
-MEDIA_ROOT = 'C:/Users/USER/Documents/projectstarbucks/encyclopedia/static'
+MEDIA_ROOT = ''

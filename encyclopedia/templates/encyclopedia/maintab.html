@@ -78,7 +78,6 @@
                     <!-- customizing form style !-->
                         {{form.non_field_errors}}
                         <div class="form-group row">
-                            {{ form.subject.errors }}
                             <label class="col-sm-12 control-label" for="{{ form.title.id_for_label }}"><h7>제목</h7></label>
                             <div class="col-sm-12">
                               {{ form.title }}
@@ -128,7 +127,7 @@
 
             {% elif service == "search" %}
             <div  id="{{service}}-tab" class="tab-pane fade" role="tabpanel" aria-labelledby="nav-{{service}}-tab">
-              <form id="searchform" class="form-horizontal" method ="POST" action="" >
+              <form id="searchform" class="form-horizontal" method ="POST" action="./search" accept-charset="UTF-8" >
                     {% csrf_token %}
                     <div class="col-sm-12">
                       <label><h7>찾기</h7></label>
@@ -136,7 +135,7 @@
                     </div>
               </form>
               <div id = "resultofsearch" class="row"></div>
-            </div>
+	    </div>
             {% endif %}
         {% endfor %}
       </div>
